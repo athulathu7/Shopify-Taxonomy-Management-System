@@ -1,0 +1,759 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+Products
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            Product Catalogue
+        </h1>
+
+        <p>
+            Browse, search and manage your imported products.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <form
+        method="GET"
+        action="{% url 'products' %}"
+    >
+
+        <div style="
+            display:flex;
+            gap:10px;
+            align-items:center;
+            flex-wrap:wrap;
+        ">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search by product name, product number or model number..."
+                value="{{ search|default:'' }}"
+                style="
+                    flex:1;
+                    min-width:250px;
+                    margin:0;
+                "
+            >
+
+            <button type="submit">
+                 Search
+            </button>
+
+
+            {% if search %}
+
+                <a
+                    href="{% url 'products' %}"
+                    class="btn btn-secondary"
+                >
+                    Clear
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </form>
+
+</div>
+
+
+{% if search %}
+
+<div class="card">
+
+    <strong>
+        Search results for:
+    </strong>
+
+    "{{ search }}"
+
+</div>
+
+{% endif %}
+
+
+<div class="table-wrapper">
+
+<table>
+
+    <thead>
+
+        <tr>
+
+            <th>
+                Product Number
+            </th>
+
+            <th>
+                Product Name
+            </th>
+
+            <th>
+                Model Number
+            </th>
+
+            <th>
+                Category
+            </th>
+
+            <th>
+                Confidence
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th>
+                Action
+            </th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+
+        {% for product in products %}
+
+
+        <tr>
+
+
+            <td>
+
+                {{ product.product_number|default:"-" }}
+
+            </td>
+
+            <td>
+
+                    {{ product.product_name|default:"-" }}
+
+            </td>
+
+
+            <td>
+
+                {{ product.model_number|default:"-" }}
+
+            </td>
+
+            <td>
+
+                {% if product.shopify_category %}
+
+                    {{ product.shopify_category }}
+
+                {% else %}
+
+                    <span class="badge badge-neutral">
+                        Not Classified
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+
+            <td>
+
+                {% if product.confidence_score != None %}
+
+                    {% if product.confidence_score >= 80 %}
+
+                        <span class="badge badge-success">
+
+                            {{ product.confidence_score }}%
+
+                        </span>
+
+                    {% elif product.confidence_score >= 50 %}
+
+                        <span class="badge badge-warning">
+
+                            {{ product.confidence_score }}%
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge badge-danger">
+
+                            {{ product.confidence_score }}%
+
+                        </span>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <span class="badge badge-neutral">
+                        -
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if product.classification_status == "classified" %}
+
+                    <span class="badge badge-success">
+                        Classified
+                    </span>
+
+                {% elif product.classification_status == "approved" %}
+
+                    <span class="badge badge-success">
+                        Approved
+                    </span>
+
+                {% elif product.classification_status == "review" %}
+
+                    <span class="badge badge-warning">
+                        Review
+                    </span>
+
+                {% elif product.classification_status == "error" %}
+
+                    <span class="badge badge-danger">
+                        Error
+                    </span>
+
+                {% else %}
+
+                    <span class="badge badge-neutral">
+                        {{ product.classification_status|default:"Pending" }}
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                <a
+                    class="btn btn-small"
+                    href="{% url 'product_detail' product.id %}"
+                >
+                    View
+                </a>
+
+            </td>
+
+
+        </tr>
+
+
+        {% empty %}
+
+        <tr>
+
+            <td
+                colspan="7"
+                style="
+                    text-align:center;
+                    padding:50px;
+                "
+            >
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📦
+                    </div>
+
+                    <h3>
+                        No products found
+                    </h3>
+
+                    <p>
+
+                        {% if search %}
+
+                            No products found for
+                            <strong>"{{ search }}"</strong>.
+
+                        {% else %}
+
+                            No products have been imported yet.
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+
+        {% endfor %}
+
+
+    </tbody>
+
+</table>
+
+</div>
+
+
+{% if page_obj.paginator.count > 0 %}
+
+<div class="professional-pagination">
+
+
+    <div class="pagination-info">
+
+        Showing
+
+        <strong>
+            {{ page_obj.start_index }}
+        </strong>
+
+        –
+
+        <strong>
+            {{ page_obj.end_index }}
+        </strong>
+
+        of
+
+        <strong>
+            {{ page_obj.paginator.count }}
+        </strong>
+
+        products
+
+    </div>
+
+
+    {% if page_obj.paginator.num_pages > 1 %}
+
+    <div class="pagination-controls">
+
+        {% if page_obj.has_previous %}
+
+            <a
+                href="?search={{ search|urlencode }}&page={{ page_obj.previous_page_number }}"
+                class="pagination-arrow"
+                title="Previous page"
+            >
+                ‹
+            </a>
+
+        {% else %}
+
+            <span
+                class="pagination-arrow disabled"
+            >
+                ‹
+            </span>
+
+        {% endif %}
+
+
+        {% if page_obj.number == 1 %}
+
+            <span class="pagination-number active">
+                1
+            </span>
+
+        {% else %}
+
+            <a
+                href="?search={{ search|urlencode }}&page=1"
+                class="pagination-number"
+            >
+                1
+            </a>
+
+        {% endif %}
+
+        {% if page_obj.number > 4 %}
+
+            <span class="pagination-dots">
+                …
+            </span>
+
+        {% endif %}
+
+
+        {% for num in page_obj.paginator.page_range %}
+
+            {% if num > 1 and num < page_obj.paginator.num_pages %}
+
+                {% if num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+
+
+                    {% if num == page_obj.number %}
+
+                        <span class="pagination-number active">
+                            {{ num }}
+                        </span>
+
+                    {% else %}
+
+                        <a
+                            href="?search={{ search|urlencode }}&page={{ num }}"
+                            class="pagination-number"
+                        >
+                            {{ num }}
+                        </a>
+
+                    {% endif %}
+
+                {% endif %}
+
+            {% endif %}
+
+        {% endfor %}
+
+
+        {% if page_obj.number < page_obj.paginator.num_pages|add:"-3" %}
+
+            <span class="pagination-dots">
+                …
+            </span>
+
+        {% endif %}
+
+        {% if page_obj.paginator.num_pages > 1 %}
+
+            {% if page_obj.number == page_obj.paginator.num_pages %}
+
+                <span class="pagination-number active">
+                    {{ page_obj.paginator.num_pages }}
+                </span>
+
+            {% else %}
+
+                <a
+                    href="?search={{ search|urlencode }}&page={{ page_obj.paginator.num_pages }}"
+                    class="pagination-number"
+                >
+                    {{ page_obj.paginator.num_pages }}
+                </a>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        {% if page_obj.has_next %}
+
+            <a
+                href="?search={{ search|urlencode }}&page={{ page_obj.next_page_number }}"
+                class="pagination-arrow"
+                title="Next page"
+            >
+                ›
+            </a>
+
+        {% else %}
+
+            <span
+                class="pagination-arrow disabled"
+            >
+                ›
+            </span>
+
+        {% endif %}
+
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+{% endif %}
+
+
+<style>
+
+    .professional-pagination {
+
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        gap: 20px;
+
+        margin-top: 22px;
+
+        padding: 16px 18px;
+
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 10px;
+
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .pagination-info {
+
+        color: #6b7280;
+
+        font-size: 14px;
+
+        line-height: 34px;
+
+        white-space: nowrap;
+
+    }
+
+
+    .pagination-info strong {
+
+        color: #111827;
+
+        font-weight: 600;
+
+    }
+
+
+    .pagination-controls {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 5px;
+
+    }
+
+
+    .pagination-number {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-width: 36px;
+
+        height: 36px;
+
+        padding: 0 9px;
+
+        border-radius: 7px;
+
+        border: 1px solid #d1d5db;
+
+        background: #ffffff;
+
+        color: #374151;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        font-weight: 500;
+
+        transition:
+            background 0.15s ease,
+            color 0.15s ease,
+            border-color 0.15s ease,
+            box-shadow 0.15s ease;
+
+    }
+
+    .pagination-number:hover {
+
+        background: #f3f4f6;
+
+        border-color: #9ca3af;
+
+        color: #111827;
+
+    }
+
+
+    .pagination-number.active {
+
+        background: #008060;
+
+        border-color: #008060;
+
+        color: #ffffff;
+
+        font-weight: 600;
+
+        cursor: default;
+
+        box-shadow: 0 2px 5px rgba(0, 128, 96, 0.20);
+
+    }
+
+    .pagination-arrow {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        width: 38px;
+
+        height: 36px;
+
+        border-radius: 7px;
+
+        border: 1px solid #d1d5db;
+
+        background: #ffffff;
+
+        color: #374151;
+
+        text-decoration: none;
+
+        font-size: 24px;
+
+        line-height: 1;
+
+        font-weight: 400;
+
+        transition:
+            background 0.15s ease,
+            color 0.15s ease,
+            border-color 0.15s ease;
+
+    }
+
+
+
+    .pagination-arrow:hover {
+
+        background: #f3f4f6;
+
+        border-color: #9ca3af;
+
+        color: #111827;
+
+    }
+
+    .pagination-arrow.disabled {
+
+        background: #f9fafb;
+
+        color: #d1d5db;
+
+        border-color: #e5e7eb;
+
+        cursor: not-allowed;
+
+    }
+
+
+    .pagination-dots {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-width: 28px;
+
+        height: 36px;
+
+        color: #6b7280;
+
+        font-size: 18px;
+
+        user-select: none;
+
+    }
+
+    @media (max-width: 700px) {
+
+        .professional-pagination {
+
+            flex-direction: column;
+
+            align-items: stretch;
+
+            padding: 14px;
+
+        }
+
+
+        .pagination-info {
+
+            text-align: center;
+
+            line-height: 24px;
+
+        }
+
+
+        .pagination-controls {
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .pagination-number {
+
+            min-width: 34px;
+
+            height: 34px;
+
+        }
+
+
+        .pagination-arrow {
+
+            width: 36px;
+
+            height: 34px;
+
+        }
+
+    }
+
+
+</style>
+
+
+{% endblock %}
+

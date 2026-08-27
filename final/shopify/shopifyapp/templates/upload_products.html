@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Upload Products
+{% endblock %}
+
+
+{% block content %}
+
+
+<h1>Upload Product Catalogue</h1>
+
+
+<div class="card">
+
+
+    <h2>
+        Upload Excel File
+    </h2>
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+
+        <label>
+            Select Excel File
+        </label>
+
+
+        <input
+            type="file"
+            name="file"
+            accept=".xlsx,.xls"
+            required
+        >
+
+
+        <button type="submit">
+
+            Upload Products
+
+        </button>
+
+    </form>
+
+
+</div>
+
+
+{% if success %}
+
+<div class="card">
+
+    <h3 class="success">
+        Import Completed
+    </h3>
+
+    <p>
+        Imported:
+        <strong>{{ imported }}</strong>
+        products
+    </p>
+
+</div>
+
+{% endif %}
+
+
+{% if error %}
+
+<div class="card">
+
+    <p class="error">
+        {{ error }}
+    </p>
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

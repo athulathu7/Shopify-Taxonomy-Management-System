@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<h1>Dashboard</h1>
+
+
+<div class="stats">
+
+
+    <div class="stat">
+
+        <h2>
+            {{ total_products }}
+        </h2>
+
+        <p>
+            Total Products
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h2>
+            {{ classified_products }}
+        </h2>
+
+        <p>
+            Classified
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h2>
+            {{ pending_products }}
+        </h2>
+
+        <p>
+            Pending
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h2>
+            {{ review_products }}
+        </h2>
+
+        <p>
+            Manual Review
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Product Classification
+    </h2>
+
+    <p>
+        Import your Excel catalogue and classify
+        products using Shopify Product Taxonomy.
+    </p>
+
+
+    <a class="btn"
+       href="{% url 'upload_products' %}">
+
+        Upload Products
+
+    </a>
+
+</div>
+
+
+{% endblock %}

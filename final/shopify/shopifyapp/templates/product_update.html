@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Update Product
+{% endblock %}
+
+{% block content %}
+
+<div style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+">
+
+    <h1 style="margin: 0;">
+        Update Product
+    </h1>
+
+    <a
+        href="{% url 'product_detail' product.id %}"
+        class="btn"
+    >
+        Back to Product
+    </a>
+
+</div>
+
+
+<form
+    method="POST"
+    enctype="multipart/form-data"
+>
+
+    {% csrf_token %}
+
+
+    <div class="card">
+
+        <h2>
+            Basic Product Information
+        </h2>
+
+
+        <p>
+            <label>
+                <strong>Product Number</strong>
+            </label>
+
+            <input
+                type="text"
+                name="product_number"
+                value="{{ product.product_number|default:'' }}"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>
+                <strong>Model Number</strong>
+            </label>
+
+            <input
+                type="text"
+                name="model_number"
+                value="{{ product.model_number|default:'' }}"
+            >
+        </p>
+
+
+        <p>
+            <label>
+                <strong>Product Name</strong>
+            </label>
+
+            <input
+                type="text"
+                name="product_name"
+                value="{{ product.product_name|default:'' }}"
+                required
+            >
+        </p>
+
+
+        <p>
+            <label>
+                <strong>Product Category</strong>
+            </label>
+
+            <input
+                type="text"
+                name="product_category"
+                value="{{ product.product_category|default:'' }}"
+            >
+        </p>
+
+
+        <p>
+            <label>
+                <strong>Product Sub Category</strong>
+            </label>
+
+            <input
+                type="text"
+                name="product_sub_category"
+                value="{{ product.product_sub_category|default:'' }}"
+            >
+        </p>
+
+
+        <p>
+            <label>
+                <strong>Collection Name</strong>
+            </label>
+
+            <input
+                type="text"
+                name="collection_name"
+                value="{{ product.collection_name|default:'' }}"
+            >
+        </p>
+
+
+        <p>
+            <label>
+                <strong>Color Collection</strong>
+            </label>
+
+            <input
+                type="text"
+                name="color_collection"
+                value="{{ product.color_collection|default:'' }}"
+            >
+        </p>
+
+
+        <p>
+            <label>
+                <strong>Product Color</strong>
+            </label>
+
+            <input
+                type="text"
+                name="product_color"
+                value="{{ product.product_color|default:'' }}"
+            >
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>
+            Product Description
+        </h2>
+
+
+        <p>
+
+            <label>
+                <strong>Description</strong>
+            </label>
+
+            <textarea
+                name="product_description"
+                rows="6"
+            >{{ product.product_description|default:'' }}</textarea>
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Bullets</strong>
+            </label>
+
+            <textarea
+                name="bullets"
+                rows="6"
+            >{{ product.bullets|default:'' }}</textarea>
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Set Includes</strong>
+            </label>
+
+            <textarea
+                name="set_includes"
+                rows="4"
+            >{{ product.set_includes|default:'' }}</textarea>
+
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Product Specifications
+        </h2>
+
+
+        <p>
+
+            <label>
+                <strong>Product Weight</strong>
+            </label>
+
+            <input
+                type="text"
+                name="product_weight"
+                value="{{ product.product_weight|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Materials</strong>
+            </label>
+
+            <input
+                type="text"
+                name="materials"
+                value="{{ product.materials|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Product Dimensions</strong>
+            </label>
+
+            <input
+                type="text"
+                name="product_dimensions"
+                value="{{ product.product_dimensions|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Assembly Required</strong>
+            </label>
+
+            <input
+                type="text"
+                name="assembly_required"
+                value="{{ product.assembly_required|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Is Set</strong>
+            </label>
+
+            <input
+                type="text"
+                name="is_set"
+                value="{{ product.is_set|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Stackable</strong>
+            </label>
+
+            <input
+                type="text"
+                name="stackable"
+                value="{{ product.stackable|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>Country Of Origin</strong>
+            </label>
+
+            <input
+                type="text"
+                name="country_of_origin"
+                value="{{ product.country_of_origin|default:'' }}"
+            >
+
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Pricing
+        </h2>
+
+
+        <p>
+
+            <label>
+                <strong>Item Cost</strong>
+            </label>
+
+            <input
+                type="text"
+                name="item_cost"
+                value="{{ product.item_cost|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>MAP Price</strong>
+            </label>
+
+            <input
+                type="text"
+                name="map_price"
+                value="{{ product.map_price|default:'' }}"
+            >
+
+        </p>
+
+
+        <p>
+
+            <label>
+                <strong>MSRP</strong>
+            </label>
+
+            <input
+                type="text"
+                name="msrp"
+                value="{{ product.msrp|default:'' }}"
+            >
+
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <button
+            type="submit"
+            class="btn btn-success"
+        >
+            Save Changes
+        </button>
+
+
+        <a
+            href="{% url 'product_detail' product.id %}"
+            class="btn"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</form>
+
+{% endblock %}

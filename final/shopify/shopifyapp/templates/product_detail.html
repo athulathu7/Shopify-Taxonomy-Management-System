@@ -1,0 +1,590 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Product Detail
+{% endblock %}
+
+{% block content %}
+
+<div style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+">
+
+    <h1 style="margin: 0;">
+        Product Details
+    </h1>
+
+    <a
+        href="{% url 'product_update' product.id %}"
+        class="btn"
+    >
+        Update Product
+    </a>
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        {{ product.product_name }}
+    </h2>
+
+    <p>
+        <strong>Product Number:</strong>
+        {{ product.product_number|default:"-" }}
+    </p>
+
+    <p>
+        <strong>Model Number:</strong>
+        {{ product.model_number|default:"-" }}
+    </p>
+
+    <p>
+        <strong>Product Category:</strong>
+        {{ product.product_category|default:"-" }}
+    </p>
+
+    <p>
+        <strong>Product Sub Category:</strong>
+        {{ product.product_sub_category|default:"-" }}
+    </p>
+
+    <p>
+        <strong>Collection:</strong>
+        {{ product.collection_name|default:"-" }}
+    </p>
+
+    <p>
+        <strong>Color:</strong>
+        {{ product.product_color|default:"-" }}
+    </p>
+
+    <p>
+        <strong>Materials:</strong>
+        {{ product.materials|default:"-" }}
+    </p>
+
+    <p>
+        <strong>Description:</strong>
+        {{ product.product_description|default:"No description available" }}
+    </p>
+
+    <p>
+        <strong>Bullets:</strong>
+        {{ product.bullets|default:"-" }}
+    </p>
+
+</div>
+
+<div class="card">
+
+    <h2>Product Images</h2>
+
+    <div style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+    ">
+
+        {% if product.image_1 %}
+
+        <div style="width: 220px;">
+
+            <p>
+                <strong>Image 1</strong>
+            </p>
+
+            <img
+                src="{{ product.image_1 }}"
+                alt="Product Image 1"
+                style="
+                    width: 200px;
+                    height: 200px;
+                    object-fit: contain;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    background: white;
+                    border-radius: 5px;
+                "
+            >
+
+        </div>
+
+        {% endif %}
+
+        {% if product.image_2 %}
+
+        <div style="width: 220px;">
+
+            <p>
+                <strong>Image 2</strong>
+            </p>
+
+            <img
+                src="{{ product.image_2 }}"
+                alt="Product Image 2"
+                style="
+                    width: 200px;
+                    height: 200px;
+                    object-fit: contain;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    background: white;
+                    border-radius: 5px;
+                "
+            >
+
+        </div>
+
+        {% endif %}
+
+        {% if product.image_3 %}
+
+        <div style="width: 220px;">
+
+            <p>
+                <strong>Image 3</strong>
+            </p>
+
+            <img
+                src="{{ product.image_3 }}"
+                alt="Product Image 3"
+                style="
+                    width: 200px;
+                    height: 200px;
+                    object-fit: contain;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    background: white;
+                    border-radius: 5px;
+                "
+            >
+
+        </div>
+
+        {% endif %}
+
+
+        {% if product.image_4 %}
+
+        <div style="width: 220px;">
+
+            <p>
+                <strong>Image 4</strong>
+            </p>
+
+            <img
+                src="{{ product.image_4 }}"
+                alt="Product Image 4"
+                style="
+                    width: 200px;
+                    height: 200px;
+                    object-fit: contain;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    background: white;
+                    border-radius: 5px;
+                "
+            >
+
+        </div>
+
+        {% endif %}
+
+        {% if product.image_5 %}
+
+        <div style="width: 220px;">
+
+            <p>
+                <strong>Image 5</strong>
+            </p>
+
+            <img
+                src="{{ product.image_5 }}"
+                alt="Product Image 5"
+                style="
+                    width: 200px;
+                    height: 200px;
+                    object-fit: contain;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    background: white;
+                    border-radius: 5px;
+                "
+            >
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if not product.image_1 and not product.image_2 and not product.image_3 and not product.image_4 and not product.image_5 %}
+
+        <p>
+            No product images available.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Shopify Classification
+    </h2>
+
+
+    <p>
+
+        <strong>Category:</strong>
+
+        {% if product.shopify_category %}
+
+            {{ product.shopify_category }}
+
+        {% else %}
+
+            Not Classified
+
+        {% endif %}
+
+    </p>
+
+
+    <p>
+
+        <strong>Confidence Score:</strong>
+
+        {% if product.confidence_score != None %}
+
+            {{ product.confidence_score }}%
+
+        {% else %}
+
+            -
+
+        {% endif %}
+
+    </p>
+
+
+    <p>
+
+        <strong>Status:</strong>
+
+        {{ product.classification_status|default:"Pending" }}
+
+    </p>
+
+
+    <p>
+
+        <strong>Manual Review:</strong>
+
+        {% if product.requires_manual_review %}
+
+            <span class="warning">
+                Yes - Review Required
+            </span>
+
+        {% else %}
+
+            <span class="success">
+                No
+            </span>
+
+        {% endif %}
+
+    </p>
+
+
+    {% if product.error_message %}
+
+        <p class="error">
+
+            <strong>Error:</strong>
+
+            {{ product.error_message }}
+
+        </p>
+
+    {% endif %}
+
+
+    <p>
+        <strong>Alternative Categories:</strong>
+    </p>
+
+
+    {% if product.alternative_categories %}
+
+        <p>
+            {{ product.alternative_categories }}
+        </p>
+
+    {% else %}
+
+        <p>
+            No alternative categories available.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<div class="card">
+
+    <h2>
+        Category Attributes
+    </h2>
+
+
+    {% if attributes %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Attribute
+                    </th>
+
+                    <th>
+                        Value
+                    </th>
+
+                    <th>
+                        Confidence
+                    </th>
+
+                    <th>
+                        Approved
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for attribute in attributes %}
+
+                    <tr>
+
+                        <td>
+                            {{ attribute.attribute_name }}
+                        </td>
+
+                        <td>
+                            {{ attribute.attribute_value }}
+                        </td>
+
+                        <td>
+
+                            {% if attribute.confidence_score != None %}
+
+                                {{ attribute.confidence_score }}%
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if attribute.approved %}
+
+                                <span class="success">
+                                    Yes
+                                </span>
+
+                            {% else %}
+
+                                No
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    {% else %}
+
+        <p>
+            No category attributes detected yet.
+        </p>
+
+    {% endif %}
+
+</div>
+
+<div class="card" style="
+    position: relative;
+    min-height: 150px;
+">
+
+    <h2>
+        Actions
+    </h2>
+
+
+    {% if not product.shopify_category %}
+
+        <div style="
+            margin-top: 15px;
+            margin-bottom: 20px;
+        ">
+
+            
+
+            <a
+                href="{% url 'classify_product' product.id %}"
+                class="btn"
+                style="
+                    background-color: #007bff;
+                    color: white;
+                    padding: 10px 18px;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-weight: 600;
+                "
+            >
+                Classify Product
+            </a>
+
+        </div>
+
+    {% else %}
+
+
+        <div style="
+            margin-top: 15px;
+            margin-bottom: 20px;
+        ">
+
+            <p style="
+                color: #198754;
+                font-weight: 600;
+                margin-bottom: 10px;
+            ">
+                ✓ Product has been classified.
+            </p>
+
+            <a
+                href="{% url 'classify_product' product.id %}"
+                class="btn"
+                style="
+                    padding: 10px 18px;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    display: inline-block;
+                    margin-right: 8px;
+                "
+            >
+                Re-Classify Product
+            </a>
+
+
+            <form
+                method="POST"
+                action="{% url 'approve_classification' product.id %}"
+                style="display: inline;"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="btn btn-success"
+                    style="
+                        padding: 10px 18px;
+                        border-radius: 5px;
+                        border: none;
+                        cursor: pointer;
+                        font-weight: 600;
+                    "
+                >
+                    Approve Classification
+                </button>
+
+            </form>
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        href="{% url 'products' %}"
+        class="btn"
+        style="
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+        "
+    >
+        Back to Products
+    </a>
+
+    <form
+        method="POST"
+        action="{% url 'product_delete' product.id %}"
+        style="
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            margin: 0;
+        "
+        onsubmit="
+            return confirm(
+                'Are you sure you want to delete this product?'
+            );
+        "
+    >
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            style="
+                background-color: #dc3545;
+                color: white;
+                border: none;
+                padding: 10px 18px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: 600;
+            "
+        >
+            Delete Product
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

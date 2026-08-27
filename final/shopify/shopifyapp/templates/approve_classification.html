@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Approve Classification
+{% endblock %}
+
+
+{% block content %}
+
+
+<h1>
+    Approve Classification
+</h1>
+
+
+<div class="card">
+
+
+    <h2>
+        {{ product.product_name }}
+    </h2>
+
+
+    <p>
+
+        <strong>Product Number:</strong>
+
+        {{ product.product_number }}
+
+    </p>
+
+
+    <p>
+
+        <strong>Suggested Category:</strong>
+
+        {{ product.shopify_category|default:"Not Classified" }}
+
+    </p>
+
+
+    <p>
+
+        <strong>Confidence:</strong>
+
+        {{ product.confidence_score|default:"-" }}%
+
+    </p>
+
+
+    <p>
+
+        <strong>Status:</strong>
+
+        {{ product.classification_status }}
+
+    </p>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn btn-success"
+        >
+
+            Approve Classification
+
+        </button>
+
+    </form>
+
+
+</div>
+
+
+{% endblock %}
+
